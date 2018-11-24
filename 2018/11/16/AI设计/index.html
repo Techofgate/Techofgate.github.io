@@ -87,10 +87,12 @@
 <meta property="og:site_name" content="ZZW&#39;s blog">
 <meta property="og:description" content="吃豆人AI设计Pac-Man的AI设计有很多亮点，其实在这之前我就在游戏机制的书中看到相关的介绍，Pac-Man的4个Ghost的AI组合会导致玩家会感觉4个ghost像是有意的在包围玩家一样，这样的AI设计就比较像人，比较真实，而会形成这样的感觉的原因简单来说还是由于4个ghost的target的选择机制各不相同，Redghost能够target是玩家目前所在的位置，也就是简单的追踪，但是red">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-11-17T08:39:03.661Z">
+<meta property="og:image" content="http://m.qpic.cn/psb?/V10fTSmm3DmMTS/cxJxn0LpKyd7DpO3G9mcLyPxj8j04zIVgzoylk031a8!/b/dPQAAAAAAAAA&bo=HQR1AgAAAAARF04!&rf=viewer_4">
+<meta property="og:updated_time" content="2018-11-24T13:39:48.350Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AI设计">
 <meta name="twitter:description" content="吃豆人AI设计Pac-Man的AI设计有很多亮点，其实在这之前我就在游戏机制的书中看到相关的介绍，Pac-Man的4个Ghost的AI组合会导致玩家会感觉4个ghost像是有意的在包围玩家一样，这样的AI设计就比较像人，比较真实，而会形成这样的感觉的原因简单来说还是由于4个ghost的target的选择机制各不相同，Redghost能够target是玩家目前所在的位置，也就是简单的追踪，但是red">
+<meta name="twitter:image" content="http://m.qpic.cn/psb?/V10fTSmm3DmMTS/cxJxn0LpKyd7DpO3G9mcLyPxj8j04zIVgzoylk031a8!/b/dPQAAAAAAAAA&bo=HQR1AgAAAAARF04!&rf=viewer_4">
 
 
 
@@ -324,6 +326,8 @@
       
         <h2 id="吃豆人AI设计"><a href="#吃豆人AI设计" class="headerlink" title="吃豆人AI设计"></a>吃豆人AI设计</h2><p>Pac-Man的AI设计有很多亮点，其实在这之前我就在游戏机制的书中看到相关的介绍，Pac-Man的4个Ghost的AI组合会导致玩家会感觉4个ghost像是有意的在包围玩家一样，这样的AI设计就比较像人，比较真实，而会形成这样的感觉的原因简单来说还是由于4个ghost的target的选择机制各不相同，Redghost能够target是玩家目前所在的位置，也就是简单的追踪，但是redGhost却又不仅仅是这么简单，这一点我在之后进行分析，PinkGhost简单的来所是在埋伏玩家，它的Target设置在玩家面对的方向的前面第四格，而Blueghost则是根据玩家的位置和Redghost的位置来判断它的target，由于引入了两个参数进行判定，所以行动轨迹非常不容易被掌握，最后的Orangeghost则是在距离玩家比较远的时候用玩家的位置作为target，当靠近到一定程度Target又切换为地图外左下角的格子，这样的设计也给予了玩家充分的压力，并且由四者组合起来的效果让四个ghost看上去像是合作行动，非常真实。</p>
 <p>但是其中的亮点并不在上面的内容，首先每个ghost都有三种基本模式，Chase模式和Scatter模式和Frightened模式，其中Frightened模式是弱化模式，移动速度全面减慢，而且还能被玩家吃掉，Chase模式就是追踪各自的Target，而且这个追踪的算法也是非常大胆，只计算下一步是往哪个方向，而且不能往回走，而且计算下一步的方式是通过计算下一步格子和目标格子的直线距离，这样会导致有时候Redghost会做出绕远路的行为，但是这样节省的大量的时间复杂度而且反而是AI更加得真实了。而Scatter则是把Target设置为地图外的某个格子，在4个角外面，并让AI进行追踪，这个模式的设计我觉得更多地还是为了使AI行动更加多样而设计的，而且这个模式中也是采用了和Chase一样的追踪算法。接下来的模式切换就是重点了，当ghost由Scatter模式或者Chase模式切换至任意模式的时候，ghost都会立即反向，在Scatter和Chase模式本身都不能回头的前提下，这样的设计更是让AI有了很好的回头方式，也减少了因为回头而产生的BUG，总体上还是为了让AI更真实，模式的时机在特定的关卡会进行变化。由这个切换机制所影响的就是Redghost的额外机制，Redghost的额外机制让其能够Scatter模式也变成Chase模式，但是却保留了模式切换的反向，这样Redghost就变成了一个让玩家非常棘手的AI，并且没有用复杂的寻路算法，却把效果做的更好，这些在我看来都是令人耳目一新的亮点。</p>
+<h2 id="恐怖谷AI分析"><a href="#恐怖谷AI分析" class="headerlink" title="恐怖谷AI分析"></a>恐怖谷AI分析</h2><p>恐怖谷最直接给人的感觉还是失真吧，因为产生恐怖谷效应的东西往往是模仿人类但是又不像人类，我反而觉得那种故意去创造畸形人类的效果不能算是恐怖谷。言归正传，谈到游戏中的恐怖谷AI，从算法上来说一些游戏中的同伴NPC表面上表现得很像人类，会智能地帮玩家攻击，一直跟随在玩家身边，但是在玩家真正觉得它很智能的时候，它又做出一些让玩家很失望的事，比如突然瞬移什么的，这种心理上的落差我觉得对于玩家也算是一种恐怖谷吧（逃），但是我感觉这和恐怖谷的定义还是差的有点远。如果要按照定义来我觉得AI影响的倒不是很多，在游戏中NPC的表情，动作，以及外表的设计可能才是更容易引起恐怖谷效应的原因。</p>
+<h2 id="怪物猎人随从猫的AI分析（原谅我实在是观察不出怪物的AI）"><a href="#怪物猎人随从猫的AI分析（原谅我实在是观察不出怪物的AI）" class="headerlink" title="怪物猎人随从猫的AI分析（原谅我实在是观察不出怪物的AI）"></a>怪物猎人随从猫的AI分析（原谅我实在是观察不出怪物的AI）</h2><p><img src="http://m.qpic.cn/psb?/V10fTSmm3DmMTS/cxJxn0LpKyd7DpO3G9mcLyPxj8j04zIVgzoylk031a8!/b/dPQAAAAAAAAA&amp;bo=HQR1AgAAAAARF04!&amp;rf=viewer_4" alt="Image"></p>
 
       
     </div>
@@ -498,7 +502,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#吃豆人AI设计"><span class="nav-number">1.</span> <span class="nav-text">吃豆人AI设计</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#吃豆人AI设计"><span class="nav-number">1.</span> <span class="nav-text">吃豆人AI设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#恐怖谷AI分析"><span class="nav-number">2.</span> <span class="nav-text">恐怖谷AI分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#怪物猎人随从猫的AI分析（原谅我实在是观察不出怪物的AI）"><span class="nav-number">3.</span> <span class="nav-text">怪物猎人随从猫的AI分析（原谅我实在是观察不出怪物的AI）</span></a></li></ol></div>
             
 
           </div>
